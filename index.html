@@ -174,7 +174,7 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
     { id: "day", label: "Open today" },
     { id: "late", label: "Open late (10 PM+)" },
     { id: "breakfast", label: "Breakfast (by 10 AM)" },
-    { id: "lunch", label: "Lunch (open at 1 PM)" },
+    { id: "lunch", label: "Open for lunch" },
     { id: "sun", label: "Open Sunday" },
     { id: "mon", label: "Open Monday" },
     { id: "delivery", label: "Delivers" },
@@ -216,6 +216,11 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
     for (var i = 0; i < today.length; i++) if (min >= today[i][0] && min < today[i][1]) return today[i];
     for (var j = 0; j < prev.length; j++) if (prev[j][1] > 1440 && min < prev[j][1] - 1440) return [prev[j][0] - 1440, prev[j][1] - 1440];
     return null;
+  }
+  function servesLunch(r, d) {
+    var s = r.sched && r.sched[d]; if (!s) return false;
+    for (var i = 0; i < s.length; i++) if (s[i][0] < 840 && s[i][1] > 690) return true; // any overlap with 11:30 AM–2 PM
+    return false;
   }
   function dayFor(r) { return state.day === "today" ? localNow(r.tz).day : +state.day; }
   function closesAt(r, d) { var s = r.sched && r.sched[d]; return s && s.length ? s[s.length - 1][1] : -1; }
@@ -289,7 +294,7 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
     if (c.day && !isOpenDay(r, d)) return false;
     if (c.late && !(closesAt(r, d) >= LATE)) return false;
     if (c.breakfast && !(isOpenDay(r, d) && opensAt(r, d) <= 600)) return false;
-    if (c.lunch && !openAt(r, d, 780)) return false;
+    if (c.lunch && !servesLunch(r, d)) return false;
     if (c.sun && !isOpenDay(r, 0)) return false;
     if (c.mon && !isOpenDay(r, 1)) return false;
     return true;
