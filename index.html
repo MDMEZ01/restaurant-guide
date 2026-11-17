@@ -229,9 +229,10 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
 
   var state = Object.assign({ tab: null, q: "", day: "today", area: "", cuisine: "", cls: "", sort: "sheet", chips: {} }, store("state") || {});
   state.q = "";
+  state.tab = null;
   var hashTab = location.hash.replace("#", "");
   if (TABS.some(function (t) { return t.slug === hashTab; })) state.tab = hashTab;
-  if (!TABS.some(function (t) { return t.slug === state.tab; })) state.tab = TABS[TABS.length - 1].slug;
+  if (!TABS.some(function (t) { return t.slug === state.tab; })) state.tab = TABS[0].slug;
 
   var el = function (id) { return document.getElementById(id); };
 
