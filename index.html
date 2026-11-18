@@ -173,7 +173,7 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
     { id: "now", label: "Open now" },
     { id: "day", label: "Open today" },
     { id: "late", label: "Open late (10 PM+)" },
-    { id: "breakfast", label: "Breakfast (opens by 10 AM)" },
+    { id: "breakfast", label: "Breakfast (opens by 9 AM)" },
     { id: "lunch", label: "Open for lunch" },
     { id: "sun", label: "Open Sunday" },
     { id: "mon", label: "Open Monday" },
@@ -294,7 +294,7 @@ footer { color: var(--muted); font-size: 12px; padding: 24px 0 32px; border-top:
     if (c.now) { var n = localNow(r.tz); if (!openAt(r, n.day, n.min)) return false; }
     if (c.day && !isOpenDay(r, d)) return false;
     if (c.late && !(closesAt(r, d) >= LATE)) return false;
-    if (c.breakfast && !(isOpenDay(r, d) && opensAt(r, d) <= 600)) return false;
+    if (c.breakfast && !(isOpenDay(r, d) && opensAt(r, d) <= 540)) return false;
     if (c.lunch && !servesLunch(r, d)) return false;
     if (c.sun && !isOpenDay(r, 0)) return false;
     if (c.mon && !isOpenDay(r, 1)) return false;
